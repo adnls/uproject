@@ -1,0 +1,9 @@
+docker exec -it sql_server bash
+mysql -u root -p123azerty
+CREATE DATABASE ubot;
+quit
+exit 
+docker exec -i sql_server mysql -uroot -p123azerty --database=ubot < C:/Users/toshiba/Desktop/uproject/db_service1/sql_dumps/ubot_full.sql
+#docker exec -it sql_server bashcker
+#mysql -u root -p123azerty
+#SELECT dateheure FROM tick_1min WHERE id='bitcoin'
