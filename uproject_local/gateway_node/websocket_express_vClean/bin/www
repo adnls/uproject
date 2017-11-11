@@ -5,40 +5,40 @@
  */
 
 var app = require('../app');
-var debug = require('debug')('websocket-node:server');
+var debug = require('debug')('websocket-express:server');
 var http = require('http');
-var socketio = require('socket.io');
-var fs = require('fs');
+const socketIO = require('socket.io');
+
+
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '8080');
+var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
-const html_render = function(req, res) {
-      fs.readFile('./index.html', 'utf-8', function(error, content) {
-          res.writeHead(200, {"Content-Type": "text/html"});
-          res.end(content);
-      });
-  }
 /**
  * Create HTTP server.
  */
-var server = http.createServer(app, html_render);
-//var server = http.createServer(app);
+
+var server = http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 
+
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
-//const io = socketIO(server); ou -> 
+// This creates our socket using the instance of the server
 var io = require('socket.io').listen(server);
+//const io = socketIO(server);
+// Les deux déclarations de io passent
 
+require("../config/web_socket_routes")(io);
+console.log("App is running\n\non port : " + port);
 /**
  * Normalize a port into a number, string, or false.
  */

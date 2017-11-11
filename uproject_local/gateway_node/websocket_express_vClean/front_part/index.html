@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Tentative de création d'un webSocket</title>
+</head>
+
+<body id="myBody" style="background-color:whitesmoke;">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.1/socket.io.min.js"></script>
+    <h1>Cliquez pour changer de couleur</h1>
+    <button type="button" id="blueButton" onclick="changeColorOnClick('darkslateblue')">Blue</button>
+    <button type="button" id="redButton" onclick="changeColorOnClick('indianred')">red</button>
+    <p id="periode">fail</p>
+
+    <script>
+        var myColor = "";
+        var socket = io.connect('http://localhost:3000');
+      
+        socket.on('myEvent1', (oneNewColor) => {
+            // setting the color of our button
+            console.log("Event1");
+            console.log(oneNewColor);
+            document.getElementById("myBody").setAttribute("style", "background-color:" + oneNewColor + ";");
+        });
+        socket.on('myEvent2', (data) => {
+            // setting the color of our button
+            console.log("Event2");
+            console.log(data);
+            document.getElementById("periode").innerHTML = data.period;
+            
+        });
+
+        function changeColorOnClick(actualColor) {
+            myColor = actualColor;
+            socket.emit('myEvent1', actualColor);
+        }
+    </script>
+</body>
+
+</html>
