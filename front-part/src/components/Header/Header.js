@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
     Nav,
     NavbarBrand,
@@ -10,56 +10,46 @@ import {
 
 class Header extends Component {
 
-  sidebarToggle(e) {
-    e.preventDefault();
-    document.body.classList.toggle('sidebar-hidden');
-  }
+    sidebarToggle(e) {
+        e.preventDefault();
+        document.body.classList.toggle('sidebar-hidden');
+    }
 
-  sidebarMinimize(e) {
-    e.preventDefault();
-    document.body.classList.toggle('sidebar-minimized');
-  }
+    sidebarMinimize(e) {
+        e.preventDefault();
+        document.body.classList.toggle('sidebar-minimized');
+    }
 
-  mobileSidebarToggle(e) {
-    e.preventDefault();
-    document.body.classList.toggle('sidebar-mobile-show');
-  }
+    mobileSidebarToggle(e) {
+        e.preventDefault();
+        document.body.classList.toggle('sidebar-mobile-show');
+    }
 
-  asideToggle(e) {
-    e.preventDefault();
-    document.body.classList.toggle('aside-menu-hidden');
-  }
+    asideToggle(e) {
+        e.preventDefault();
+        document.body.classList.toggle('aside-menu-hidden');
+    }
 
-  render() {
-    return (
-      <header className="app-header navbar">
-        <NavbarToggler className="d-lg-none" onClick={this.mobileSidebarToggle}>
-          <span className="navbar-toggler-icon"></span>
-        </NavbarToggler>
-          <NavItem className="px-3">
-              <NavLink href="#/">"Notre logo"</NavLink>
-          </NavItem>
-        <NavbarToggler className="d-md-down-none" onClick={this.sidebarMinimize}>
-          <span className="navbar-toggler-icon"></span>
-        </NavbarToggler>
-          <Nav className="d-md-down-none mr-auto" navbar>
-              <NavItem className="px-3">
-                  <NavLink href="#/Profil">Profil</NavLink>
-              </NavItem>
-              <NavItem className="px-3">
-                  <NavLink href="#/Market">Market</NavLink>
-              </NavItem>
-              <NavItem className="px-3">
-                  <NavLink href="#Strategy">Strategy</NavLink>
-              </NavItem>
-          </Nav>
-        <NavbarToggler className="d-md-down-none" onClick={this.asideToggle}>
-          <span className="navbar-toggler-icon"></span>
-        </NavbarToggler>
+    render() {
+        return (
+            <header className="app-header navbar">
+                <div style={{float: 'left'}}>
+                    <NavbarToggler className="d-md-down-none" style={{transform: 'translateY(0.9rem)'}}
+                                   onClick={this.sidebarMinimize}>
+                        <span className="navbar-toggler-icon"></span>
+                    </NavbarToggler>
+                    <NavItem className="px-3" style={{transform: 'translate(3rem,-1.1rem)'}}>
+                        <NavLink href="#/">"Notre logo"</NavLink>
+                    </NavItem>
 
-      </header>
-    )
-  }
+                </div>
+                <NavbarToggler className="d-md-down-none" style={{float: 'right'}} onClick={this.asideToggle}>
+                    <i className="fa fa-bell-o"></i>
+                </NavbarToggler>
+
+            </header>
+        )
+    }
 }
 
 export default Header;

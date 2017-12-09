@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import ChartDashboard from '../../components/ChartDashboard/ChartDashboard';
 
 class Dashboard extends Component {
 
@@ -6,11 +7,7 @@ class Dashboard extends Component {
         return (
             <div className="animated fadeIn">
                 Hello Dashboard
-                <div className="container-fluid">
-                    <div className="card">
-                        <p>Chart container</p>
-                    </div>
-                </div>
+                <ChartDashboard/>
             </div>
         )
     }

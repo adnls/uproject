@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Link, Switch, Route, Redirect} from 'react-router-dom';
 import {Container} from 'reactstrap';
+// Import de mes component
 import Header from '../../components/Header/';
 import Sidebar from '../../components/Sidebar/';
 import Breadcrumb from '../../components/Breadcrumb/';
@@ -8,6 +9,7 @@ import Aside from '../../components/Aside/';
 import Footer from '../../components/Footer/';
 
 /** Import de mes views pour mon routing **/
+// Correspond a mes pages
 import Dashboard from '../../views/Dashboard/';
 import Market from '../../views/Market/';
 import Profil from '../../views/Profil/';

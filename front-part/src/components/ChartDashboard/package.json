@@ -1,0 +1,6 @@
+{
+  "name": "ChartDashboard",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./ChartDashboard.js"
+}
