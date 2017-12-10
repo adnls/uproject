@@ -3,46 +3,31 @@ import sharedData from '../data-container.service';
 // Crud services for candleSticksGraph
 // TODO: Répartir les function de la class clandleSticksDrawing dans le CRUD
 import CreateCandleSticksService from './CRUD/CreateCandleSticksGraph.service';
-import ReadCandleSticksService from './CRUD/ReadCandleSticksGraph.service.service';
-import RemoveCandleSticksService from './CRUD/RemoveCandleSticksGraph.service.service';
-import UpdateCandleSticksService from './CRUD/UpdateCandleSticksGraph.service.service';
+import ReadCandleSticksService from './CRUD/ReadCandleSticksGraph.service';
+import RemoveCandleSticksService from './CRUD/RemoveCandleSticksGraph.service';
+import UpdateCandleSticksService from './CRUD/UpdateCandleSticksGraph.service';
 
 // d3 library call for graph visualisation
 import * as d3 from 'd3';
 
 
 class CandleSticksDrawingClass {
-    parseDate;
-    margin;
-    size;
-    sizeWithMargin;
 
     constructor() {
-        this.margin = sharedData.margin;
-        this.parseDate = d3.timeParse('%Y-%m-%dT%H:%M:%SZ');
-        this.size = {
-            windowWidth: element.offsetWidth,
-            windowHeight: 540
-        };
-        this.sizeWithMargin = {
-            windowWidthWithMargin: this.size.windowWidth - this.margin.left - this.margin.right,
-            windowHeightWithMargin: this.size.windowHeight - this.margin.top - this.margin.bottom
-        };
     }
 
-    drawManagement(visualizationId) {
-        console.log(visualizationId);
+    dataParser(data, parseDate) {
+        const myData = data[0]['1min']['tickers'][0]['ethereum'];
+        myData.forEach(function (oneData) {
+            oneData['dateheure'] = parseDate(oneData['dateheure']);
+        });
+        return myData;
     }
 
-    dataParser(data) {
-        console.log(data);
-        console.log(this.margin);
-    }
-
-    createScale(myData, sizeWithMargin) {
+    createScale(myData, sizeWithMargin, parseDate) {
         const timeDomain = {
-            start: this.parseDate('2017-03-01T00:00:00Z'),
-            end: this.parseDate('2017-03-02T00:00:00Z')
+            start: parseDate('2017-12-01T12:40:00Z'),
+            end: parseDate('2017-12-01T13:00:00Z')
         };
 
         const xAndYScale = {};
@@ -52,18 +37,20 @@ class CandleSticksDrawingClass {
 
         // Found max value of employeeNumber for yScale domain
         const yMax = function () {
+
             const yMaxValue = Math.max.apply(null, myData.map(d => {
-                return d.employeeNumber + 1;
+                return d.max_usd + 1;
             }));
             if (yMaxValue > 10) {
                 return yMaxValue;
             } else {
-                return 10;
+                return 800;
             }
         };
         xAndYScale['yScale'] = d3.scaleLinear()
         // Domain en y: de 0 à la valeur maximum employeeNumber
-            .domain([0, yMax()])
+            //.domain([440, yMax()])
+            .domain([436, 445])
             .rangeRound([sizeWithMargin.windowHeightWithMargin, 0]);
 
         return xAndYScale;
@@ -71,12 +58,12 @@ class CandleSticksDrawingClass {
     }
 
 
-    createSvgAndContainer(visualizationId, size) {
-        const svg = d3.select('.' + visualizationId)
+    createSvgAndContainer(visualizationElement, size) {
+        const svg = d3.select(visualizationElement)
             .append('svg')
             .attr('width', size.windowWidth)
             .attr('height', size.windowHeight)
-            .style('background-color', 'white');
+            .attr('style', 'padding-left: 2rem;background-color: white');
         const rectAndAxisContainer = svg.append('g')
             .attr('style', 'transform: translate(20px,20px)')
             .attr('width', size.windowWidth)
@@ -91,11 +78,11 @@ class CandleSticksDrawingClass {
         };
     }
 
-    createAndInstantiateAxis(visualizationId, xAndYScale, rectAndAxisContainer, size) {
+    createAndInstantiateAxis(xAndYScale, rectAndAxisContainer, size) {
         // Create x Axis
         const xAxis = d3.axisBottom(xAndYScale['xScale']);
-        xAxis.tickArguments([d3.timeMinute.every(60)])
-            .tickFormat(d3.timeFormat('%H'));
+        xAxis.tickArguments([d3.timeMinute.every(5)])
+            .tickFormat(d3.timeFormat('%H:%M'));
         // Instantiate xAxis
         rectAndAxisContainer.append('g')
             .attr('transform', 'translate(0,' + size.windowHeightWithMargin + ')')
@@ -110,33 +97,84 @@ class CandleSticksDrawingClass {
     }
 
     createRectElement(myData, svgContainer, xAndYScale, sizeWithMargin) {
+        // const formatedData = myData[0]['1min']['tickers'][0]['ethereum'];
+        const rectContainer = svgContainer.rectContainer;
+        /*const rects = rectContainer
+            .data(formatedData)
+            .enter();
+        */
+        const rects = svgContainer.rectContainer.selectAll('.rectTest').data(myData).enter();
 
+        rects.append('rect')
+            .attr('class', 'rectTest')
+            .attr('id', function (d) {
+                return d['av_supp'];
+            })
+            .attr('y', function (d) {
+                const openCloseDiff = d['close_usd'] - d['open_usd'];
+                if (openCloseDiff < 0) {
+                    return xAndYScale['yScale'](d['close_usd']);
+                } else {
+                    return xAndYScale['yScale'](d['open_usd'])
+                }
+            })
+            .attr('transform', function (d) {
+                return 'translate(' + xAndYScale['xScale'](d['dateheure']) + ',0)';
+            })
+            .style('stroke', 'black')
+            .attr('dataValue', function (d) {
+                return d['open_usd'] + '-' + d['close_usd'];
+            })
+            .attr('rx', 2)
+            .attr('ry', 2)
+            .style('fill', 'lightgrey')
+            .attr('width', '20px')
+            .attr('height', function (d) {
+                const openCloseDiff = d['close_usd'] - d['open_usd'];
+                /*
+                if (openCloseDiff === 0) {
+                    return '2px';
+                } else {
+                    console.log(Math.abs(openCloseDiff));
+                    xAndYScale['yScale'](Math.abs(openCloseDiff));
+                    return xAndYScale['yScale'](Math.abs(openCloseDiff));
+                }*/
+
+                if (openCloseDiff < 0) {
+                    return  xAndYScale['yScale'](d['open_usd']);
+                } else if (openCloseDiff === 0) {
+                    return "3px"
+                } else {
+                    return xAndYScale['yScale'](d['close_usd'])
+                }
+            });
     }
 
     redrawChart() {
 
     }
 }
-function DrawCandleSticksGraph(visualizationId, data) {
+function DrawCandleSticksGraph(visualizationElement, data) {
     // Instantiation de la class
     const candleSticksDrawingClass = new CandleSticksDrawingClass();
-    candleSticksDrawingClass.drawManagement(visualizationId);
     // Récupération des variables
     const margin = sharedData.margin;
     const parseDate = d3.timeParse('%Y-%m-%dT%H:%M:%SZ');
     const size = {
-        windowWidth: element.offsetWidth,
+        windowWidth: visualizationElement.offsetWidth - 100,
         windowHeight: 540
     };
     const sizeWithMargin = {
         windowWidthWithMargin: size.windowWidth - margin.left - margin.right,
         windowHeightWithMargin: size.windowHeight - margin.top - margin.bottom
     };
-    let myData = candleSticksDrawingClass.dataParser(data);
+
+    let myData = candleSticksDrawingClass.dataParser(data, parseDate);
+
     // Creation des scale x et y (nécessaire a la creation des axes)
-    const xAndYScale = candleSticksDrawingClass.createScale(myData, sizeWithMargin);
+    const xAndYScale = candleSticksDrawingClass.createScale(myData, sizeWithMargin, parseDate);
     // Creation du svg et autres container
-    const svgContainer = candleSticksDrawingClass.createSvgAndContainer(element, size);
+    const svgContainer = candleSticksDrawingClass.createSvgAndContainer(visualizationElement, size);
     // Creation des axes
     candleSticksDrawingClass.createAndInstantiateAxis(xAndYScale, svgContainer.rectAndAxisContainer, sizeWithMargin);
     // Creation des elements rectangulaires (bars de l'histogramme)
@@ -161,4 +199,4 @@ function DrawCandleSticksGraph(visualizationId, data) {
      eventListenerWithDebounce(this.redrawChart);*/
 
 }
-module.exports = DrawCandleSticksGraph;
+export default DrawCandleSticksGraph;

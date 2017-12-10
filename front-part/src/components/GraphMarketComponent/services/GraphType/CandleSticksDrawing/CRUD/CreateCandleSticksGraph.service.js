@@ -1,4 +1,4 @@
-export default class CreateCandleStick {
+export default class CreateCandleSticksService {
     constructor(){}
 
     createScale() {

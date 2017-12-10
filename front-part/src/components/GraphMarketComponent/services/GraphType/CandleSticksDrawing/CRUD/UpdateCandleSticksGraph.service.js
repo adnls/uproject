@@ -1,3 +1,3 @@
-/**
- * Created by rostomboudi on 10/12/2017.
- */
+export default class UpdateCandleSticksService {
+    constructor(){}
+}

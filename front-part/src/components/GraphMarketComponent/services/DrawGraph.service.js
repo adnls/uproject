@@ -1,4 +1,8 @@
 import DrawCandleSticksGraph from './GraphType/CandleSticksDrawing/CandleSticksDrawing.service';
+// Api Call
+import currencyTickersCallService from '../../../services/apiCall/currencyTickers';
+import currencyTickersFakeCallService from '../../../services/fakeApiCall/currencyTickers';
+
 
 // Env
 const useApi = false;
@@ -9,10 +13,13 @@ let dataFromHttpCall = {};
 class DrawClass {
     constructor() {
         // Call http service
-        if (useApi)
-            dataFromHttpCall = 'httpRequest';
-        else
-            dataFromHttpCall = 'd';
+        if (useApi) {
+            const apiCallService = new currencyTickersCallService();
+            dataFromHttpCall = apiCallService.getCurrencyTickers();
+        } else {
+            const fakeApiCallService = new currencyTickersFakeCallService();
+            dataFromHttpCall = fakeApiCallService.getCurrencyTickers();
+        }
     }
 
     allGraphDrawManagement(visualizationId, data) {
@@ -21,7 +28,7 @@ class DrawClass {
     }
 
 }
-export default function DrawGraph(visualizationId) {
+export default function DrawGraph(visualizationElement) {
     const drawClass = new DrawClass();
-    drawClass.allGraphDrawManagement(visualizationId, dataFromHttpCall);
+    drawClass.allGraphDrawManagement(visualizationElement, dataFromHttpCall);
 }

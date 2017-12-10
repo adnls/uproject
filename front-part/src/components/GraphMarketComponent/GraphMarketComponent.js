@@ -4,19 +4,18 @@ import DrawGraph from '../../components/GraphMarketComponent/services/DrawGraph.
 
 // Env variable
 const visualisationId = 'js-d3MarketGraphId';
-
+let visualizationDiv = null;
 class GraphMarketComponent extends Component {
+    componentDidMount() {
+        DrawGraph(visualizationDiv);
+    }
 
     render() {
-        DrawGraph(visualisationId);
         return (
             <div className="container-fluid containerFluidForCard">
-                <div className="card cardPadding">
-                    <h3>GraphMarketComponent Container for visualization Division</h3>
-                    <br/>
-                    <h4>visualization-id = visualizationId</h4>
-                </div>
-                <div id={{visualisationId}}>
+                <div className="card cardPadding" ref={(thisDiv) => {
+                    visualizationDiv = thisDiv;
+                }}>
                 </div>
             </div>
         )
