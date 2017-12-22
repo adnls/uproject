@@ -31,7 +31,7 @@
   "dependencies": {
     "bootstrap": "4.0.0-beta.2",
     "chart.js": "2.7.0",
-    "d3": "^4.11.0",
+    "d3": "^4.12.0",
     "font-awesome": "^4.7.0",
     "history": "4.7.2",
     "react": "^16.0.0",
@@ -40,8 +40,7 @@
     "react-router-dom": "^4.2.2",
     "react-transition-group": "^2.2.1",
     "reactstrap": "^5.0.0-alpha.3",
-    "simple-line-icons": "^2.4.1",
-    "techan": "^0.8.0"
+    "simple-line-icons": "^2.4.1"
   },
   "scripts": {
     "dev": "webpack -d --progress --watch --profile --json > compilation-stats.json --env.dev",

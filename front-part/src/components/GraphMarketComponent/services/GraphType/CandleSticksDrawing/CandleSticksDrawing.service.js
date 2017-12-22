@@ -20,6 +20,8 @@ class CandleSticksDrawingClass {
         const myData = data[0]['1min']['tickers'][0]['ethereum'];
         myData.forEach(function (oneData) {
             oneData['dateheure'] = parseDate(oneData['dateheure']);
+            oneData['close_usd'] = parseFloat(oneData['close_usd']);
+            oneData['open_usd'] = parseFloat(oneData['open_usd']);
         });
         return myData;
     }
@@ -49,7 +51,7 @@ class CandleSticksDrawingClass {
         };
         xAndYScale['yScale'] = d3.scaleLinear()
         // Domain en y: de 0 à la valeur maximum employeeNumber
-            //.domain([440, yMax()])
+        //.domain([440, yMax()])
             .domain([436, 445])
             .rangeRound([sizeWithMargin.windowHeightWithMargin, 0]);
 
@@ -69,7 +71,7 @@ class CandleSticksDrawingClass {
             .attr('width', size.windowWidth)
             .attr('height', size.windowHeight)
             .attr('class', 'rectAndAxisContainer');
-        const rectContainer = rectAndAxisContainer.append('g')
+        const rectContainer = rectAndAxisContainer.append('svg')
             .attr('class', 'rectContainer');
         return {
             svg: svg,
@@ -81,7 +83,7 @@ class CandleSticksDrawingClass {
     createAndInstantiateAxis(xAndYScale, rectAndAxisContainer, size) {
         // Create x Axis
         const xAxis = d3.axisBottom(xAndYScale['xScale']);
-        xAxis.tickArguments([d3.timeMinute.every(5)])
+        xAxis.tickArguments([d3.timeMinute.every(1)])
             .tickFormat(d3.timeFormat('%H:%M'));
         // Instantiate xAxis
         rectAndAxisContainer.append('g')
@@ -100,11 +102,10 @@ class CandleSticksDrawingClass {
         // const formatedData = myData[0]['1min']['tickers'][0]['ethereum'];
         const rectContainer = svgContainer.rectContainer;
         /*const rects = rectContainer
-            .data(formatedData)
-            .enter();
-        */
+         .data(formatedData)
+         .enter();
+         */
         const rects = svgContainer.rectContainer.selectAll('.rectTest').data(myData).enter();
-
         rects.append('rect')
             .attr('class', 'rectTest')
             .attr('id', function (d) {
@@ -132,20 +133,20 @@ class CandleSticksDrawingClass {
             .attr('height', function (d) {
                 const openCloseDiff = d['close_usd'] - d['open_usd'];
                 /*
-                if (openCloseDiff === 0) {
-                    return '2px';
-                } else {
-                    console.log(Math.abs(openCloseDiff));
-                    xAndYScale['yScale'](Math.abs(openCloseDiff));
-                    return xAndYScale['yScale'](Math.abs(openCloseDiff));
-                }*/
+                 if (openCloseDiff === 0) {
+                 return '2px';
+                 } else {
+                 console.log(Math.abs(openCloseDiff));
+                 xAndYScale['yScale'](Math.abs(openCloseDiff));
+                 return xAndYScale['yScale'](Math.abs(openCloseDiff));
+                 }*/
 
                 if (openCloseDiff < 0) {
-                    return  xAndYScale['yScale'](d['open_usd']);
+                    return xAndYScale['yScale'](d['close_usd']) - xAndYScale['yScale'](d['open_usd']);
                 } else if (openCloseDiff === 0) {
                     return "3px"
                 } else {
-                    return xAndYScale['yScale'](d['close_usd'])
+                    return xAndYScale['yScale'](d['open_usd']) - xAndYScale['yScale'](d['close_usd']);
                 }
             });
     }

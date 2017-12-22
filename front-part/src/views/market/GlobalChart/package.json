@@ -1,0 +1,6 @@
+{
+  "name": "MarketGlobalChart",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./MarketGlobalChart.js"
+}

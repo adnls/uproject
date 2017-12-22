@@ -1,0 +1,9 @@
+{
+  "name": "GlobalChartComponent",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./GlobalChartComponent.js",
+  "dependencies": {
+    "d3": "^4.12.0"
+  }
+}

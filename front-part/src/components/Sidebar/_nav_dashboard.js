@@ -15,17 +15,17 @@ export default {
         },
         {
             name: 'Global Chart',
-            url: '/Market',
+            url: '/market/globalchart',
             icon: 'icon-pie-chart'
         },
         {
-            name: 'Other Chart',
-            url: '/Market',
+            name: 'MarketRank',
+            url: '/market/rank',
             icon: 'icon-vector'
         },
         {
-            name: 'Currency',
-            url: '/Market',
+            name: 'MarketCurrency',
+            url: '/market/currency',
             icon: 'fa fa-btc',
             badge: {
                 variant: 'info',

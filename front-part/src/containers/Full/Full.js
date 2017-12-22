@@ -9,11 +9,14 @@ import Aside from '../../components/Aside/';
 import Footer from '../../components/Footer/';
 
 /** Import de mes views pour mon routing **/
-// Correspond a mes pages
+// Import de Pages
 import Dashboard from '../../views/Dashboard/';
-import Market from '../../views/Market/';
 import Profil from '../../views/Profil/';
 import Strategy from '../../views/Strategy/';
+// Market Pages
+import MarketCurrency from '../../views/market/Currency';
+import MarketGlobalChart from '../../views/market/GlobalChart';
+import MarketRank from '../../views/market/Rank';
 
 class Full extends Component {
     render() {
@@ -27,7 +30,11 @@ class Full extends Component {
                         <Container fluid>
                             <Switch>
                                 <Route path="/dashboard" name="Dashboard" component={Dashboard}/>
-                                <Route path="/market" name="Market" component={Market}/>
+                                /* Market Routes */
+                                <Route path="/market/currency" name="MarketCurrency" component={MarketCurrency}/>
+                                <Route path="/market/globalchart" name="MarketGlobalChart" component={MarketGlobalChart}/>
+                                <Route path="/market/rank" name="MarketRank" component={MarketRank}/>
+
                                 <Route path="/profil" name="Profil" component={Profil}/>
                                 <Route path="/strategy" name="Strategy" component={Strategy}/>
                                 <Redirect from="/" to="/dashboard"/>
