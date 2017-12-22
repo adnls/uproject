@@ -6,15 +6,17 @@ let visualizationDiv = null;
 
 class GlobalChartComponent extends Component {
     componentDidMount() {
-        DrawPieChart();
+        DrawPieChart(visualizationDiv);
     }
 
     render() {
         return (
             <div className="container-fluid containerFluidForCard">
-                <div className="card cardPadding" ref={(thisDiv) => {
-                    visualizationDiv = thisDiv;
-                }}>
+                <div className="col-md-8">
+                    <canvas className="card cardPadding" ref={(thisDiv) => {
+                        visualizationDiv = thisDiv;
+                    }}>
+                    </canvas>
                 </div>
             </div>
         )

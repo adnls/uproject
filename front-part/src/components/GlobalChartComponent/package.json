@@ -4,6 +4,6 @@
   "private": true,
   "main": "./GlobalChartComponent.js",
   "dependencies": {
-    "d3": "^4.12.0"
+    "chart.js": "^2.7.1"
   }
 }
