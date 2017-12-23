@@ -51,7 +51,10 @@ function DrawCandleSticksGraph(visualizationElement, data) {
     // Creation des elements rectangulaires (bars de l'histogramme)
     // Tous les élements doivent etre crées dans le for (pour éviter de parcourir plusieurs fois l'array de data)
     myData.forEach((oneData) => {
+        // Création des rectangle de candleStick
         createCandleSticksService.createRectElement(oneData, svgContainer, xAndYScale);
+        // Création des lines au dessus des candleSticks
+        createCandleSticksService.createLineElement(oneData, svgContainer, xAndYScale);
     })
     // TODO: Event listener avec debouce a réparer
     // Gestion des Event listener permettant le resizing des graph a chaque resize de la fenetre de navigateur

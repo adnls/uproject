@@ -18,9 +18,18 @@ const sharedData = {
     },
     // use in CreateCandleSticksService.createRectElement
     usdOrBtc: 'usd', // 'usd' or 'btc' (for open_usd and close_usd)
-    candleHeightWhenDiffNull: '3',
-    candleWidth: '20',
-    candleColor: 'lightgrey',
-    candleStrokeColor: 'black',
+    candleStick: {
+        candleHeightWhenDiffNull: '3',
+        candleWidth: '20',
+        candleColor: 'lightgrey',
+        candleStrokeColor: 'black'
+    },
+    // used in CreateCandleSticksService.createLineElement
+    candleSticksLine: {
+        xPositionForCandleStickLine: 0,
+        strokeWidth: 3,
+        candleStrokeColor: 'black'
+    }
+
 };
 export default sharedData;

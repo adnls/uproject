@@ -52,10 +52,13 @@ export default class CreateCandleSticksService {
             .attr('class', 'rectAndAxisContainer');
         const rectContainer = rectAndAxisContainer.append('svg')
             .attr('class', 'rectContainer');
+        const lineContainer = rectAndAxisContainer.append('svg')
+            .attr('class', 'lineContainer');
         return {
             svg: svg,
             rectAndAxisContainer: rectAndAxisContainer,
-            rectContainer: rectContainer
+            rectContainer: rectContainer,
+            lineContainer: lineContainer
         };
     }
 
@@ -83,12 +86,12 @@ export default class CreateCandleSticksService {
         // Data from shared Data
         const close = `close_${sharedData['usdOrBtc']}`;
         const open = `open_${sharedData['usdOrBtc']}`;
-        const candleHeightWhenDiffNull = sharedData['candleHeightWhenDiffNull'];
+        const candleHeightWhenDiffNull = sharedData['candleStick']['candleHeightWhenDiffNull'];
 
         const candleStyle = {
-            candleWidth: sharedData['candleWidth'],
-            candleColor: sharedData['candleColor'],
-            candleStrokeColor: sharedData['candleStrokeColor']
+            candleWidth: sharedData['candleStick']['candleWidth'],
+            candleColor: sharedData['candleStick']['candleColor'],
+            candleStrokeColor: sharedData['candleStick']['candleStrokeColor']
         };
         const rectContainer = svgContainer.rectContainer;
         rectContainer.append('rect')
@@ -97,7 +100,7 @@ export default class CreateCandleSticksService {
                 return oneData['av_supp'];
             })
             .attr('x', () => {
-                return - (candleStyle.candleWidth/2) + 'px';
+                return -(candleStyle.candleWidth / 2) + 'px';
             })
             .attr('y', () => {
                 const openCloseDiff = oneData[close] - oneData[open];
@@ -128,5 +131,56 @@ export default class CreateCandleSticksService {
                     return xAndYScale['yScale'](oneData[open]) - xAndYScale['yScale'](oneData[close]);
                 }
             });
+    }
+
+    createLineElement(oneData, svgContainer, xAndYScale) {
+        console.log('createlineElement');
+        // Data from shared Data
+        const close = `close_${sharedData['usdOrBtc']}`;
+        const open = `open_${sharedData['usdOrBtc']}`;
+
+
+        const candleStickLine = {
+            xPosition: sharedData['candleSticksLine']['xPositionForCandleStickLine'],
+            strokeWidth: sharedData['candleSticksLine']['strokeWidth'],
+            candleStrokeColor: sharedData['candleSticksLine']['candleStrokeColor']
+        };
+
+        const lineContainer = svgContainer.lineContainer;
+        lineContainer.append('line')
+            .attr('class', 'rectTest')
+            .attr('id', () => {
+                return oneData['av_supp'];
+            })
+            .attr('x1', () => {
+                return candleStickLine.xPosition + 'px';
+            })
+            .attr('y1', () => {
+                const openCloseDiff = oneData[close] - oneData[open];
+                if (openCloseDiff < 0) {
+                    return xAndYScale['yScale'](oneData[close]);
+                } else {
+                    return xAndYScale['yScale'](oneData[open])
+                }
+            })
+            .attr('x2', () => {
+                return candleStickLine.xPosition + 'px';
+            })
+            .attr('y2', () => {
+                const openCloseDiff = oneData[close] - oneData[open];
+                if (openCloseDiff > 0) {
+                    return xAndYScale['yScale'](oneData[close]);
+                } else {
+                    return xAndYScale['yScale'](oneData[open])
+                }
+            })
+            .attr('transform', () => {
+                return 'translate(' + xAndYScale['xScale'](oneData['dateheure']) + ',0)';
+            })
+            .attr('dataValue', () => {
+                return oneData[open] + '-' + oneData[close];
+            })
+            .style('stroke', candleStickLine.candleStrokeColor)
+            .style('stoke-width', candleStickLine.strokeWidth);
     }
 }
