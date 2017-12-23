@@ -7,28 +7,27 @@ import currencyTickersFakeCallService from '../../../services/fakeApiCall/curren
 // Env
 const useApi = false;
 
-// variable
-let dataFromHttpCall = {};
-
 class DrawClass {
     constructor() {
+        this.dataFromHttpCall = {};
         // Call http service
+        // TODO: Virer tous les api call et utiliser des storages redux pour partager les données
         if (useApi) {
             const apiCallService = new currencyTickersCallService();
-            dataFromHttpCall = apiCallService.getCurrencyTickers();
+            this.dataFromHttpCall = apiCallService.getCurrencyTickers();
         } else {
             const fakeApiCallService = new currencyTickersFakeCallService();
-            dataFromHttpCall = fakeApiCallService.getCurrencyTickers();
+            this.dataFromHttpCall = fakeApiCallService.getCurrencyTickers();
         }
     }
 
-    allGraphDrawManagement(visualizationId, data) {
+    allGraphDrawManagement(visualizationId) {
         // Création du candleSticks graph
-        DrawCandleSticksGraph(visualizationId, data);
+        DrawCandleSticksGraph(visualizationId, this.dataFromHttpCall);
     }
 
 }
 export default function DrawGraph(visualizationElement) {
     const drawClass = new DrawClass();
-    drawClass.allGraphDrawManagement(visualizationElement, dataFromHttpCall);
+    drawClass.allGraphDrawManagement(visualizationElement);
 }

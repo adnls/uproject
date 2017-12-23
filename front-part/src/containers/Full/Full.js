@@ -13,7 +13,7 @@ import Footer from '../../components/Footer/';
 import Dashboard from '../../views/Dashboard/';
 import Profil from '../../views/Profil/';
 import Strategy from '../../views/Strategy/';
-// Market Pages
+// Import de Market Pages
 import MarketCurrency from '../../views/market/Currency';
 import MarketGlobalChart from '../../views/market/GlobalChart';
 import MarketRank from '../../views/market/Rank';
@@ -34,7 +34,7 @@ class Full extends Component {
                                 <Route path="/market/currency" name="MarketCurrency" component={MarketCurrency}/>
                                 <Route path="/market/globalchart" name="MarketGlobalChart" component={MarketGlobalChart}/>
                                 <Route path="/market/rank" name="MarketRank" component={MarketRank}/>
-
+                                /* Profil and Strategy Routes*/
                                 <Route path="/profil" name="Profil" component={Profil}/>
                                 <Route path="/strategy" name="Strategy" component={Strategy}/>
                                 <Redirect from="/" to="/dashboard"/>

@@ -4,6 +4,23 @@ const sharedData = {
         bottom: 60,
         left: 100,
         right: 60
-    }
+    },
+    // use in CreateCandleSticksService.createScale
+    timeDomain: {
+        start: '2017-12-01T12:40:00Z',
+        end: '2017-12-01T13:00:00Z'
+    },
+    // use in CreateCandleSticksService.createAndInstantiateAxis
+    xTicksAxisEvery: {
+        every: 1,
+        format: 'timeMinute',
+        tickFormat: '%H:%M'
+    },
+    // use in CreateCandleSticksService.createRectElement
+    usdOrBtc: 'usd', // 'usd' or 'btc' (for open_usd and close_usd)
+    candleHeightWhenDiffNull: '3',
+    candleWidth: '20',
+    candleColor: 'lightgrey',
+    candleStrokeColor: 'black',
 };
 export default sharedData;

@@ -5,7 +5,21 @@ import DrawGraph from '../../components/GraphMarketComponent/services/DrawGraph.
 // Env variable
 const visualisationId = 'js-d3MarketGraphId';
 let visualizationDiv = null;
+
 class GraphMarketComponent extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            key1: 'qlq chose'
+        };
+    }
+
+    changeState(newState) {
+        this.setState({
+            key1: newState
+        });
+    }
+
     componentDidMount() {
         DrawGraph(visualizationDiv);
     }
