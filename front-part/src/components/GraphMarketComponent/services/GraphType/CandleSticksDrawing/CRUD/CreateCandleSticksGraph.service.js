@@ -54,6 +54,27 @@ export default class CreateCandleSticksService {
             .attr('class', 'rectContainer');
         const lineContainer = rectAndAxisContainer.append('svg')
             .attr('class', 'lineContainer');
+        svg.on('mousemove', () => {
+            /*if (mouseTimeout) {
+             clearTimeout(mouseTimeout);
+             }
+             const mouseTimeout = setTimeout(() => {
+             console.log('mousemove');
+             }, 100);*/
+            const mousePosition = d3.mouse(d3.event.currentTarget);
+            const crossMouseLineContainerElement = document.getElementById('js-crossMouseLineId-candleStickGraph');
+            if (crossMouseLineContainerElement) {
+                crossMouseLineContainerElement.parentNode.removeChild(crossMouseLineContainerElement);
+            }
+            const crossMouseContainer = d3.select(d3.event.currentTarget)
+                .append('g')
+                .attr('id', 'js-crossMouseLineId-candleStickGraph');
+            /*crossMouseContainer.prototype.remove = function() {
+             this.parentElement.removeChild(this);
+             };*/
+            this.createCrossMouseLine(mousePosition, 'xLine', crossMouseContainer, size);
+            this.createCrossMouseLine(mousePosition, 'yLine', crossMouseContainer, size);
+        });
         return {
             svg: svg,
             rectAndAxisContainer: rectAndAxisContainer,
@@ -182,5 +203,30 @@ export default class CreateCandleSticksService {
             })
             .style('stroke', candleStickLine.candleStrokeColor)
             .style('stoke-width', candleStickLine.strokeWidth);
+    }
+
+    createCrossMouseLine(mousePosition, type, svgContainer, size) {
+        // mousePosition[0] = mousePosition en x et mousePosition[1] en y
+        svgContainer.append('line')
+            .attr('class', 'rectTest')
+            .attr('x1', () => {
+                if (type === 'yLine') return '18px';
+                else return mousePosition[0] + 'px';
+            })
+            .attr('y1', () => {
+                if (type === 'xLine') return 0;
+                else return mousePosition[1] + 'px';
+            })
+            .attr('x2', () => {
+                if (type === 'yLine') return size['windowWidth'];
+                else return mousePosition[0] + 'px';
+            })
+            .attr('y2', () => {
+                if (type === 'xLine') return size['windowHeight'] - 20;
+                else return mousePosition[1] + 'px';
+            })
+            .style('stroke', 'black');
+        //.prototype.remove = function() {
+        //   this.parentElement.removeChild(this);
     }
 }
