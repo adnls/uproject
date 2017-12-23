@@ -16,6 +16,7 @@ const sharedData = {
         format: 'timeMinute',
         tickFormat: '%H:%M'
     },
+    /** Candle stick graph **/
     // use in CreateCandleSticksService.createRectElement
     usdOrBtc: 'usd', // 'usd' or 'btc' (for open_usd and close_usd)
     candleStick: {
@@ -29,7 +30,12 @@ const sharedData = {
         xPositionForCandleStickLine: 0,
         strokeWidth: 3,
         candleStrokeColor: 'black'
+    },
+    /** Volume graph **/
+    volumeGraph: {
+        candleWidth: '20',
+        candleColor: 'grey',
+        candleStrokeColor: 'grey'
     }
-
 };
 export default sharedData;

@@ -50,11 +50,18 @@ export default class CreateCandleSticksService {
             .attr('width', size.windowWidth)
             .attr('height', size.windowHeight)
             .attr('class', 'rectAndAxisContainer');
-        const rectContainer = rectAndAxisContainer.append('svg')
+        /** CandleStick graph container **/
+        const candleStickGraphContainer = rectAndAxisContainer.append('svg')
+            .attr('id', 'candleStickGraphContainer');
+        const rectContainer = candleStickGraphContainer.append('svg')
             .attr('class', 'rectContainer');
-        const lineContainer = rectAndAxisContainer.append('svg')
+        const lineContainer = candleStickGraphContainer.append('svg')
             .attr('class', 'lineContainer');
+        /** Volume graph container **/
+        const volumeGraphContainer = rectAndAxisContainer.append('svg')
+            .attr('id', 'volumeGraphContainer');
         svg.on('mousemove', () => {
+            // TODO: Mettre un timeout pour éviter de surCall la la fct associée au mousemove
             /*if (mouseTimeout) {
              clearTimeout(mouseTimeout);
              }
@@ -78,8 +85,13 @@ export default class CreateCandleSticksService {
         return {
             svg: svg,
             rectAndAxisContainer: rectAndAxisContainer,
-            rectContainer: rectContainer,
-            lineContainer: lineContainer
+            candleStickGraph: {
+                rectContainer: rectContainer,
+                lineContainer: lineContainer
+            },
+            volumeGraph: {
+                rectContainer: rectContainer
+            }
         };
     }
 
@@ -114,7 +126,7 @@ export default class CreateCandleSticksService {
             candleColor: sharedData['candleStick']['candleColor'],
             candleStrokeColor: sharedData['candleStick']['candleStrokeColor']
         };
-        const rectContainer = svgContainer.rectContainer;
+        const rectContainer = svgContainer.candleStickGraph.rectContainer;
         rectContainer.append('rect')
             .attr('class', 'rectTest')
             .attr('id', () => {
@@ -155,7 +167,6 @@ export default class CreateCandleSticksService {
     }
 
     createLineElement(oneData, svgContainer, xAndYScale) {
-        console.log('createlineElement');
         // Data from shared Data
         const close = `close_${sharedData['usdOrBtc']}`;
         const open = `open_${sharedData['usdOrBtc']}`;
@@ -167,7 +178,7 @@ export default class CreateCandleSticksService {
             candleStrokeColor: sharedData['candleSticksLine']['candleStrokeColor']
         };
 
-        const lineContainer = svgContainer.lineContainer;
+        const lineContainer = svgContainer.candleStickGraph.lineContainer;
         lineContainer.append('line')
             .attr('class', 'rectTest')
             .attr('id', () => {
