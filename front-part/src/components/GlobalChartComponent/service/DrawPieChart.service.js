@@ -39,7 +39,6 @@ class DrawClass {
 
     drawPieChart(visualizationElement) {
         this.foundArrayOfData();
-        console.log(this.pieChartDataArray);
         // Instanciation de la class issue de la lib chart.js
         const myChart = new Chart(visualizationElement.getContext('2d'), {
             type: 'doughnut',
